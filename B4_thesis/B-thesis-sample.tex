@@ -1,0 +1,94 @@
+\documentclass[10pt,a4j]{jarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{algorithmic, algorithm}
+\usepackage{comment}
+\usepackage{subfigure}
+\usepackage{flow}
+\usepackage{here}
+\usepackage{amssymb}
+\usepackage{easytable}
+\usepackage{bbm}
+\usepackage[bbgreekl]{mathbbol}
+
+
+\makeatletter
+\newcommand{\figcaption}[1]{\def\@captype{figure}\caption{#1}}
+\newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
+\makeatother
+%\usepackage{subfigure}
+
+%----------表紙設定----------%
+\makeatletter
+\def\id#1{\def\@id{#1}}
+\def\department#1{\def\@department{#1}}
+\def\faculty#1{\def\@faculty{#1}}
+\def\adviser#1{\def\@adviser{#1}}
+\def\@maketitle{
+	\begin{center}
+		{\Large \@title \par} % 論文のタイトル部分
+		\vspace{40mm}
+		{\large \@date\par} % 提出年月日部分
+		\vspace{15mm}
+		{\large \@faculty \par} % 学部
+		\vspace{15mm}
+		{\large \@department \par} % 所属部分
+		\vspace{50mm}
+		{\large \@id \par} % 学籍番号
+		\vspace{5mm}
+		{\large \@author \par} % 氏名
+		\vspace{5mm}
+		{\large 指導教員:\ \@adviser \par} % 指導教員
+		\vspace{10mm}
+		{\large 豊橋技術科学大学 \par} % 大学名
+	\end{center}
+	\par\vskip 1.5em
+}
+\makeatother
+
+\title{不整地生成AIを用いたロボットの未知環境適応のための\\実験フレームワークに関する研究} % 論文タイトル
+\date{\today} % 日付
+\faculty{学部（工学）} % 学部
+\department{情報・知能工学課程} % 所属課程
+\id{201809} % 学籍番号
+\author{大野\ 裕之} % 氏名
+\adviser{垣内\ 洋平} % 指導教員
+
+\begin{document}
+
+%-----表紙-----%
+\maketitle
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
+%-----概要-----%
+\input{./section/abstract}
+\newpage
+
+%-----目次-----%
+\tableofcontents
+\newpage
+%-----本文-----%
+%--- はじめに ---%
+\input{./section/introduction}
+% \input{./section/related_work}
+\input{./section/method1}
+\input{./section/method2}
+\input{./section/conclusion}
+
+\newpage
+
+%-----謝辞-----%
+\section*{謝辞}
+本研究を進めるにあたって,ご指導いただいた垣内教授,増沢助手に心から感謝申し上げます.垣内教授には,日頃から技術的ご指導や研究方針の相談などで大変お世話になりました.また,プログラムの実装や環境構築などについては増沢助手に多くのアドバイスや補助をいただきました.そして,日頃から親しくさせていただいている情報・ロボットシステム研究室の皆様も親身になって助言や協力をしていただきましたので心から感謝を申し上げます.
+
+\newpage
+
+%-----参考文献-----%
+\bibliographystyle{junsrt} %参考文献出力スタイル
+\bibliography{references} %hoge.bibから拡張子を外した名前
+
+\end{document}

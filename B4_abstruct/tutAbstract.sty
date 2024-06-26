@@ -1,0 +1,93 @@
+% ------------------------------------------------------------------
+%　　学部卒業研究発表概要スタイル
+%　　December, 2013
+%　　by Shohei Masuda
+%　　Last Update : Dec. 5, 2013
+% ------------------------------------------------------------------
+\typeout{Bachelor's abstract}
+\typeout{December 5, 2013}
+\typeout{by Shohei Masuda}
+
+% A4 size : (210mm x 297mm)
+\setlength{\topmargin}{-15.4truemm}	%上余白
+\setlength{\oddsidemargin}{-5.4truemm}	%左余白
+\setlength{\headheight}{0truemm}		%ヘッダ領域
+\setlength{\headsep}{0truemm}			%ヘッダ-本文
+\setlength{\textwidth}{170truemm}		%本文幅
+\setlength{\textheight}{277truemm}		%本文高さ
+
+%アブストラクトの左右にスペースを開ける
+\def\flushleft#1#2{%
+	\trivlist\raggedright
+	\rightskip#2
+	\leftskip#1
+	\item\relax}
+
+%アブストラクト用インデント
+\def\IndentEng{%
+	\hspace{1em}}
+
+%タイトル
+\def\Title#1{\gdef\@Title{#1}}
+\gdef\@Title{}
+%名前
+\def\Name#1{\gdef\@Name{#1}}
+\gdef\@Name{}
+%学籍番号
+\def\StudentNumber#1{\gdef\@StudentNumber{#1}}
+\gdef\@StudentNumber{}
+%指導教員
+\def\Teacher#1{\gdef\@Teacher{#1}}
+\gdef\@Teacher{}
+%英語アブストラクト
+\def\AbstractText#1{\gdef\@AbstractText{#1}}
+\gdef\@AbstractText{}
+
+%section類の再定義
+\renewcommand{\section}{%
+	\if@slide\clearpage\fi
+	\@startsection{section}{1}{\z@}%
+	{1.2zh}% 前アキ
+	{0.2zh}% 後アキ
+	{\normalfont\normalsize\bfseries\headfont\raggedright}%
+}%
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+	{0zh}{0.2zh}%
+	{\normalfont\normalsize\headfont}%
+}%
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+	{0zh}{0.2zh}%
+	{\normalfont\normalsize\headfont}%
+}%
+
+%タイトル部分
+\def\TitleText{%
+\twocolumn[
+	\begin{center}
+		%タイトル
+		{\Large\bfseries \@Title }
+		\vspace{1zw}
+	\end{center}
+	\begin{center}
+		%学籍番号等
+		{\large\bfseries 学籍番号:\ \@StudentNumber \hspace{2mm} \@Name\ \hspace{5mm} 指導教員:\ \@Teacher}
+		\vspace{1zw}
+	\end{center}
+	\begin{flushleft}{2zw}{2zw}
+		%アブストラクト
+		Abstract:\,\@AbstractText
+	\end{flushleft}
+	\vspace{1zh}
+]}
+
+%行間の設定
+\renewcommand{\baselinestretch}{0.9}
+%図などのマージンなし
+\setlength\floatsep{0pt}
+\setlength\textfloatsep{0pt}
+\setlength\intextsep{0pt}
+\setlength\abovecaptionskip{0pt}
+%ページ番号なし
+\pagestyle{empty}
+%subsubsectionまで
+\setcounter{secnumdepth}{3}

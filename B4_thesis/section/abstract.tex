@@ -1,0 +1,16 @@
+\begin{center}
+    {\section*{概要}}
+\end{center}
+
+本研究では，生成AIを用いた未知の不整地環境生成によるロボットの走行実験フレームワークについて述べる．
+未知環境におけるロボットの使用が期待されているが，ロボットがそのような環境で自動走行を行うことは困難である．
+この問題を解決する一つの方法として，機械学習を用いた走行計画を立てることが考えられるが，そのために用意できる学習用地形データには限界がある．
+そこで，生成AIとしてGANを用いて未知の不整地を生成することで，膨大な学習データを確保し，ロボットの走行性能を向上させる実験フレームワークを提案する．
+また，生成した地形データの有効性を，元の地形データと生成した地形データのそれぞれをロボットが走行した際の軌跡を比較することで評価する．
+\\
+
+This paper describes an experimental framework for robot exploration of uneven terrain environments using generative AI.
+While robots are expected to be used in unknown environments, it is difficult for robots to adapt to such environments and successfully explore them.
+One way to solve this problem is to use machine learning to plan a run, but there is a limit to the amount of training terrain data that can be prepared for this purpose.
+In this paper, we propose an experimental framework that uses GAN as generative AI to generate unknown rough terrain to secure a huge amount of learning data and improve the robot's running performance.
+We also evaluate the effectiveness of the generated terrain by comparing the trajectory of the robot when it runs on the original and generated terrain data, respectively.

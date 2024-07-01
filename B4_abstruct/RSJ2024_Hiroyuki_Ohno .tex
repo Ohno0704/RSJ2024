@@ -1,10 +1,12 @@
 % お使いの環境に合わせて以下3行のdocumentclassをお選びください。
-\documentclass[twocolumn]{jarticle} % pLaTeX
-%\documentclass[uplatex,twocolumn]{jsarticle}  % upLaTeX
+% \documentclass[twocolumn]{jarticle} % pLaTeX
+\documentclass[uplatex,twocolumn, dvipdfmx]{jsarticle}  % upLaTeX
 %\documentclass[xelatex,twocolumn,ja=standard,enablefam=true]{bxjsarticle} % XeLaTeX
 
 \usepackage{rsj2024j}
-\usepackage[dvipdfmx]{graphicx}
+% \usepackage[dvipdfmx]{graphicx}
+% \documentclass[dvipdfmx]{jsarticle}
+\usepackage[final]{graphicx}
 \usepackage{url}
 \usepackage{tikz}
 \usepackage[dvipdfmx]{color}
@@ -48,17 +50,22 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \subsubsection{NASAの月面データについて}
 上記で説明した通り、NASAの提供している月面データを利用してデータセットにする．アポロ11号等の宇宙船が着陸した地点から$30 \mathrm{\, km}$\times$30\mathrm{\, km}$の範囲の高度マップになっている．これらは3Dプリンティング等のために提供されており，ファイルはSTL形式のメッシュデータになっている．以下の図\ref{fig:NASA_moons}に使用したデータの例を示す．
+% \begin{figure}
+
+% \includegraphics[0.48\linewidth]{images/choreonoid.png}
+
+% \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \begin{minipage}[b]{0.48\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.3]{images/NASA_moon.png}
+    \includegraphics[keepaspectratio, scale=0.15]{images/NASA_moon.png}
     \subcaption{月面の例1}\label{fig:NASA_moon}
   \end{minipage}
   \begin{minipage}[b]{0.48\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.6]{images/NASA_moon2.png}
+    \includegraphics[keepaspectratio, scale=0.3]{images/NASA_moon2.png}
     \subcaption{月面の例2}\label{fig:NASA_moon2}
   \end{minipage}
   \caption{使用した月面の例}\label{fig:NASA_moons}

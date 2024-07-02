@@ -181,7 +181,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 
 \subsection{走行計画手法}
-走行計画として,4つの深度カメラから得られた画像から走行可能な方位を選択する方法を用いた.事前に生成した地形を用いて走行実験を行い,ある方位に走行可能だった場合はsafe(図\ref{fig:safe}) として 0,転倒や脱輪により探査続行不可になった場合はその直前の画像に danger(図\ref{fig:stack})として 1 をラベリングする.そのデータに対し出力が 0 から 1 になるよう機械学習し,走行中に推論した結果最も 0 に近い値を出力した方位に向かうようにした.例えば図\ref{fig:planning}のような場合には，ロボットは前方向に進む．
+走行計画として,4つの深度カメラから得られた画像から走行可能な方位を選択する方法を用いた.事前に生成した地形を用いて走行実験を行い,ある方位に走行可能だった場合はsafe(図\ref{fig:labeling}左) として 0,転倒や脱輪により探査続行不可になった場合はその直前の画像に danger(図\ref{fig:labeling}右)として 1 をラベリングする.そのデータに対し出力が 0 から 1 になるよう機械学習し,走行中に推論した結果最も 0 に近い値を出力した方位に向かうようにした.例えば図\ref{fig:planning}のような場合には，ロボットは前方向に進む．
 
 \begin{figure}[t]
   \centering
@@ -195,27 +195,27 @@ In this paper, we propose an experimental framework that uses GAN as generative 
     \includegraphics[keepaspectratio, scale=0.096]{images/stack.png}
     \subcaption{dangerの時}\label{fig:stack}
   \end{minipage}
-  \caption{ラベリングのイメージ}
+  \caption{ラベリングのイメージ}\label{fig:labeling}
 \end{figure}
 
 \begin{figure}[t]
-\begin{center}
-  \includegraphics[width=0.6\linewidth]{images/planning.png}
-  \caption{4方向からの深度画像と推論イメージ}
-  \label{fig:planning}
-\end{center}
+  \begin{center}
+    \includegraphics[width=0.6\linewidth]{images/planning.png}
+    \caption{4方向からの深度画像と推論イメージ}
+    \label{fig:planning}
+  \end{center}
 \end{figure}
 
 \subsection{実験方法}
 予め生成した複数の不整地上を手動操作でロボットに走行させ,機械学習用データを収集する。画像数は計10000枚ほどであり，それぞれにsafeとdangerをラベリングした．学習モデルにはCNN(Convolutional Neural Network) を使用した.上記のデータを用いて学習を行い,再度生成した不整地上をロボットに走行させながらその軌跡を保存する.走行するマップ範囲内での軌跡の含有率をロボットの走破性と定義した.\cite{bunken2}シミュレーションにはロボット用統合 GUI ソフトウェアであるchoreonoid を用いた.このシミュレーション環境上に月面と$6 \mathrm{\,m}$\times$6\mathrm{\,m}$の壁を周囲に配置し，それをマップの範囲とした．[図\ref{fig:choreonoid}]
 
-\begin{figure}[b]
-  \begin{center}
-   \includegraphics[width=0.5\linewidth]{images/choreonoid.png}
-   \caption{実験用マップ}
-   \label{fig:choreonoid}
-  \end{center}
- \end{figure}
+% \begin{figure}[b]
+%   \begin{center}
+%    \includegraphics[width=0.5\linewidth]{images/choreonoid.png}
+%    \caption{実験用マップ}
+%    \label{fig:choreonoid}
+%   \end{center}
+%  \end{figure}
 
 \subsection{生成地形の評価}
 本研究では以下の2つの点からロボットを走行させることで地形データの評価をすることとした．
@@ -227,12 +227,12 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \centering
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.1]{images/origin_moon_field3.png}
+    \includegraphics[keepaspectratio, scale=0.096]{images/origin_moon_field3.png}
     \subcaption{元の月面1}\label{fig:origin_moon_field3}
   \end{minipage}
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
     \includegraphics[keepaspectratio, scale=0.096]{images/original_moon_field4.png}
     \subcaption{元の月面2}\label{fig:original_moon_field4}
@@ -242,12 +242,12 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \centering
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.1]{images/generate_field3.png}
+    \includegraphics[keepaspectratio, scale=0.096]{images/generate_field3.png}
     \subcaption{生成した月面1}\label{fig:generate_field3}
   \end{minipage}
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
     \includegraphics[keepaspectratio, scale=0.096]{images/generate_field4.png}
     \subcaption{生成した月面2}\label{fig:generate_field4}
@@ -259,7 +259,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
   \centering
   \begin{minipage}[b]{0.47\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.1]{images/origin_moon_trajectory3.png}
+    \includegraphics[keepaspectratio, scale=0.096]{images/origin_moon_trajectory3.png}
     \subcaption{元の月面1}\label{fig:origin_moon_trajectory3}
   \end{minipage}
   \begin{minipage}[b]{0.47\linewidth}
@@ -274,7 +274,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
   \centering
   \begin{minipage}[b]{0.47\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.1]{images/generate_trajectory3.png}
+    \includegraphics[keepaspectratio, scale=0.096]{images/generate_trajectory3.png}
     \subcaption{生成した月面1}\label{fig:generate_trajectory3}
   \end{minipage}
   \begin{minipage}[b]{0.47\linewidth}

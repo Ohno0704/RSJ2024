@@ -30,9 +30,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 現在, 災害現場や月面などの未知環境におけるロボットの活用が, 人の活動領域の拡大やその際に
 起こりうる人の身の危険性を回避するという点で期待されている. しかし, それら未知の環境に対
 してロボットが自動操作のみで探査を行うのは困難である. \cite{bunken1} また, それらの環境に対するシミュ
-レーション用に地形データを収集するのにも限界がある. \cite{bunken2} そこで本研究では, ロボットが走行す
-る未知の不整地環境を効率的に生成する方法と, その地形を評価するための走行実験フレームワー
-クを提案する.
+レーション用に地形データを収集するのにも限界がある. \cite{bunken2} そこで本研究では，NASAが提供している月面データを元に生成AIモデルである3D-IWGANを用いて不整地データを生成することにより，走行計画に必要な学習用データを効率的にかつ大規模に用意する方法を提案する．また，生成した地形上でロボットを走行させ，その走破性評価を行うことによって学習用データとしての有用性が判断できるか検討する．この方法により，生成したデータが元のデータに対してどこまで自然か，またはどこまで似ているかといったヒューリスティックな評価をせず，定量的な基準を設定して評価することができるようになると主張できる．
 
 \subsection{本論文の構成}
 本論文の構成について説明する. 第 2 章ではロボットの走行実験に必要な地形データを効率的に
@@ -51,7 +49,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 \subsubsection{NASAの月面データについて}
 上記で説明した通り、NASAの提供している月面データを利用してデータセットにする．アポロ11号等の宇宙船が着陸した地点から$30 \mathrm{\, km}$\times$30\mathrm{\, km}$の範囲の高度マップになっている．これらは3Dプリンティング等のために提供されておりファイルはSTL形式のメッシュデータになっている．図\ref{fig:NASA_moons}に使用したデータの例を示す．
 
-\begin{figure}[b]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.48\linewidth}
     \centering
@@ -71,7 +69,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 \subsubsection{ボクセル化について}
 本研究では，三次元分布の可視化をする際にその特徴をボクセルによって表現することとした．このボクセルの解像度によって地表面の起伏度合いを調整できることと，その起伏度合いが視覚的に伝わりやすいためである．ここでは月面データをボクセル化する方法について具体的に述べていく．まずはボクセルの解像度を設定する．ここでは仮にボクセルの解像度を256\times256\times64とする．地表のメッシュ三角形の頂点座標を取得し，256\times256の各格子内にある頂点の平均値をその代表点とする．[図\ref{fig:mesh_point}]それらの点の最大値が高さ方向の解像度の64マス目となる．このようにして0マス目からその格子の点の高さまでを点で埋めることで，0と1で表現された256\times256\times64の座標データが出来上がる．これに従って$1\mathrm{\,m}$\times$1\mathrm{\,m}$\times$1\mathrm{\,m}$の矩形を描くことでボクセルを表現する．
 
-\begin{figure}[b]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.37\linewidth}
     \centering
@@ -90,19 +88,17 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 \subsubsection{GANを用いた地形データ生成について}
 三次元ボクセルの高さ方向の分散により，不整地の起伏度合いを表現した．使用したGANモデルの構造を以下の図\ref{fig:3d_gan}に示す．データの入力方法は，正規分布に従った乱数の平均と標準偏差の値を入力する方法，画像をエンコードした後の平均と標準偏差の値を入力する方法，深度カメラ等を用いて取得した画像から作成した三次元のボクセル座標をエンコードした後，その平均と標準偏差の値を入力する方法の3種類となっている．月面データを32\times32\times32に分割したボクセルにし，その三次元座標をGANの入力として学習を行った出力結果が図\ref{fig:voxel}である．
 
-\begin{figure}[b]
+\begin{figure}[t]
   \begin{center}
-   \includegraphics[width=1.0\linewidth]{images/3d_gan.png}
-   \caption{3D-IWGANのモデル構造}
-   \label{fig:3d_gan}
+   \includegraphics[width=1.0\linewidth]{images/3d_gan_large.png}
+   \caption{3D-IWGANのモデル構造}\label{fig:3d_gan}
   \end{center}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[t]
   \begin{center}
-   \includegraphics[width=0.6\linewidth]{images/voxel.png}
-   \caption{GANでの学習結果}
-   \label{fig:voxel}
+   \includegraphics[width=0.8\linewidth]{images/voxel.png}
+   \caption{GANでの学習結果}\label{fig:voxel}
   \end{center}
 \end{figure}
 
@@ -128,7 +124,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 これにはPythonの数値解析ライブラリであるSciPyからscipy.interpolate.bisplrepという関数を呼び出すことで自動で計算を行った．
 この曲線にそって三角形メッシュの頂点を決定してメッシュ化を行う．以下の図\ref{fig:mesh_moons}は生成した月面のボクセルデータとそれを元にメッシュ化した月面データの例である．高さの離れた点が隣接していると，スプライン曲線の特性上例の4のように極端に鋭利な地形領域ができてしまう場合があった．
 
-\begin{figure}[b]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.49\linewidth}
     \centering
@@ -143,7 +139,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
   \caption{ボクセル化した月面の例}\label{fig:voxel_moons}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[t]
   \centering
   \begin{minipage}[b]{0.49\linewidth}
     \centering
@@ -158,13 +154,14 @@ In this paper, we propose an experimental framework that uses GAN as generative 
   \caption{スプライン近似によってメッシュ化した月面の例}\label{fig:mesh_moons}
 \end{figure}
 
+\section{実験}
 \subsection{ロボットの構成}
 使用するロボットには，外界のセンシング機能と不整地に対する一定の走破性能を持ったハードウェアがそれぞれ要求される．そこで使用するロボットには，図\ref{fig:fig}のような径の大きな2つのタイヤと2つのキャスタ，深度カメラを4方向に搭載した．
 このロボットは，ROS及びGazeboシミュレーターの管理団体であるOpen RoboticsとロボットメーカーROBOTIS(ロボティズ)が共同開発したTurtlebot3\cite{bunken4}のWaffleモデルをもとにしており,各寸法は図\ref{fig:turtlebot}のようになっている.タイヤ径はこの3.5倍に設定しており,4方向の深度カメラは水平方向に対し45度下に傾けた状態にしている.深度カメラの画像サイズは320\times320とした.
 
 \begin{figure}[t]
   \begin{center}
-   \includegraphics[width=0.4\linewidth]{images/robot_visual.png}
+   \includegraphics[width=0.7\linewidth]{images/robot_visual.png}
    \caption{ロボットの構成}
    \label{fig:fig}
   \end{center}
@@ -173,7 +170,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \begin{center}
-   \includegraphics[width=0.7\linewidth]{images/turtlebot.png}
+   \includegraphics[width=1.0\linewidth]{images/turtlebot.png}
    \caption{TurtleBot3 Waffle}
    \label{fig:turtlebot}
   \end{center}
@@ -200,7 +197,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \begin{center}
-    \includegraphics[width=0.6\linewidth]{images/planning.png}
+    \includegraphics[width=1.0\linewidth]{images/planning.png}
     \caption{4方向からの深度画像と推論イメージ}
     \label{fig:planning}
   \end{center}
@@ -257,14 +254,14 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \centering
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.096]{images/origin_moon_trajectory3.png}
+    \includegraphics[keepaspectratio, scale=0.115]{images/origin_moon_trajectory3.png}
     \subcaption{元の月面1}\label{fig:origin_moon_trajectory3}
   \end{minipage}
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.096]{images/origin_moon_trajectory4.png}
+    \includegraphics[keepaspectratio, scale=0.115]{images/origin_moon_trajectory4.png}
     \subcaption{元の月面2}\label{fig:origin_moon_trajectory4}
   \end{minipage}
   \caption{元の月面}
@@ -272,14 +269,14 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 
 \begin{figure}[t]
   \centering
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.096]{images/generate_trajectory3.png}
+    \includegraphics[keepaspectratio, scale=0.1]{images/generate_trajectory3.png}
     \subcaption{生成した月面1}\label{fig:generate_trajectory3}
   \end{minipage}
-  \begin{minipage}[b]{0.47\linewidth}
+  \begin{minipage}[b]{0.49\linewidth}
     \centering
-    \includegraphics[keepaspectratio, scale=0.096]{images/generate_trajectory4.png}
+    \includegraphics[keepaspectratio, scale=0.1]{images/generate_trajectory4.png}
     \subcaption{生成した月面2}\label{fig:generate_trajectory4}
   \end{minipage}
   \caption{生成した月面}
@@ -289,7 +286,7 @@ In this paper, we propose an experimental framework that uses GAN as generative 
 \section{おわりに}
 
 \subsection{まとめ}
-本研究では3D-IWGANを用いて不整地を生成することで,走行計画に必要な学習用データを効率的かつ大規模に用意し,その走破性評価による実験フレームワークの作成を行った．3章で述べたとおり，生成した地形が走行計画の学習用データとしての有用性があるかは，統計的な特徴量だけで判断するのは難しく，実際にロボットを走行させて評価する必要があることが分かった．ここでは,マップ内をロボットに走行させた軌跡の含有率が近いデータが元の地形データと類似していると判断し,更にその有用性を評価できた.また，本研究での実験フレームワークによって元の月面データの走破結果に近い生成地形を用いることで,少数の地形データで走行計画に必要な機械学習用データを効率的に収集できることが分かった.
+本研究では3D-IWGANを用いて不整地を生成することで,走行計画に必要な学習用データを効率的かつ大規模に用意し,その走破性評価による実験フレームワークの作成を行った．3章で述べたとおり，生成した地形が走行計画の学習用データとしての有用性があるかは，統計的な特徴量だけで判断するのは難しく，実際にロボットを走行させて評価する必要があることが分かった．これにより，生成された結果に対してどこまで自然か，どこまで元のデータに似ているかといったヒューリスティックな評価をせず，定量的な基準を設定して評価できるようになったと言える．ここでは,マップ内をロボットに走行させた軌跡の含有率が近いデータが元の地形データと類似していると判断し,更にその有用性を評価できた.また，本研究での実験フレームワークによって元の月面データの走破結果に近い生成地形を用いることで,少数の地形データで走行計画に必要な機械学習用データを効率的に収集できることが分かった.
 
 
 \subsection{今後の課題}
